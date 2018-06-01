@@ -8,14 +8,9 @@ import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedE
 public class DiscordListener {
     @EventSubscriber
     public void onMessageReceived(MessageReceivedEvent event) {
-        String discriminator = event.getAuthor().getDiscriminator();
+        String author = event.getAuthor().getName();
         String message = event.getMessage().getContent();
 
-        Player player = DiscubePlugin.getPlayer(discriminator);
-        if(player != null) {
-            player.sendMessage(event.getAuthor().getName() + ": " + message);
-        }
-
-        System.out.println(discriminator + ": " + message);
+        DiscubePlugin.sendMessage(author + ": " + message);
     }
 }

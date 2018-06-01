@@ -1,11 +1,13 @@
 package com.codingcrusader.discubeplugin;
 
+import org.bukkit.Color;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import sx.blah.discord.api.ClientBuilder;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.util.DiscordException;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class DiscubePlugin extends JavaPlugin {
@@ -43,6 +45,12 @@ public class DiscubePlugin extends JavaPlugin {
 
     public static Player getPlayer(String discriminator) {
         return discordPlayerMap.get(discriminator);
+    }
+
+    public static void sendMessage(String message) {
+        for (Player player : discordPlayerMap.values()) {
+            player.sendMessage(Color.PURPLE + message);
+        }
     }
 
     private IDiscordClient createDiscordClient(String token, boolean login) {
