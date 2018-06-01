@@ -39,7 +39,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.1.1</version>
-                <configuration>
+                <!--<configuration>
                     <artifactSet>
                         <excludes>
                             <exclude>${project.groupId}:${project.artifactId}:*</exclude>
@@ -49,7 +49,7 @@
                     <shadedArtifactAttached>false</shadedArtifactAttached>
                     <createDependencyReducedPom>false</createDependencyReducedPom>
                 </configuration>
-                <!--<configuration>
+                <configuration>
                     <artifactSet>
                         <includes>
                             <include>com.discord4j</include>
