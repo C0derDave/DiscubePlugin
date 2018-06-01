@@ -10,7 +10,7 @@ public class RegisterCommand implements CommandExecutor {
         if(sender instanceof Player) {
             Player player = (Player) sender;
             if(args.length > 0) {
-                DiscubePlugin.registerPlayer(player, args[0]);
+                DiscubePlugin.registerPlayer(player.getUniqueId(), args[0]);
                 return true;
             } else {
                 return false;

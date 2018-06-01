@@ -1,21 +1,28 @@
 package com.codingcrusader.discubeplugin;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Color;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import sx.blah.discord.api.ClientBuilder;
 import sx.blah.discord.api.IDiscordClient;
+import sx.blah.discord.handle.obj.IMessage;
+import sx.blah.discord.handle.obj.IUser;
 import sx.blah.discord.util.DiscordException;
+import sx.blah.discord.util.MessageTokenizer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.UUID;
 
 public class DiscubePlugin extends JavaPlugin {
-    private static HashMap<String, Player> discordPlayerMap;
+    private static HashMap<UUID, String> playerDiscordMap;
 
     public static final String NAME = "Discube";
 
-    private IDiscordClient discordClient;
+    private static IDiscordClient discordClient;
 
     @Override
     public void onEnable() {
@@ -24,11 +31,12 @@ public class DiscubePlugin extends JavaPlugin {
         }
         saveConfig();
 
-        discordPlayerMap = new HashMap<String, Player>();
+        playerDiscordMap = new HashMap<UUID, String>();
 
         discordClient = createDiscordClient(getConfig().getString("discordToken"),  true);
         discordClient.getDispatcher().registerListener(new DiscordListener());
 
+        getServer().getPluginManager().registerEvents(new ServerListener(), this);
         getCommand("register").setExecutor(new RegisterCommand());
 
         getLogger().info(NAME + " enabled!");
@@ -39,18 +47,32 @@ public class DiscubePlugin extends JavaPlugin {
         getLogger().info(NAME + " disabled!");
     }
 
-    public static void registerPlayer(Player player, String discriminator) {
-        discordPlayerMap.put(discriminator, player);
+    public static void registerPlayer(UUID uuid, String discriminator) {
+        playerDiscordMap.put(uuid, discriminator);
     }
 
-    public static Player getPlayer(String discriminator) {
-        return discordPlayerMap.get(discriminator);
+    public static String getDiscriminator(UUID uuid) {
+        return playerDiscordMap.get(uuid);
     }
 
-    public static void sendMessage(String message) {
-        for (Player player : discordPlayerMap.values()) {
-            player.sendMessage(Color.PURPLE + message);
+    public static void sendMessage(IUser author, IMessage message) {
+        String toSend = ChatColor.LIGHT_PURPLE + author.getName() + "#" + author.getDiscriminator() + ": " + message.getContent();
+
+        for (UUID uuid : playerDiscordMap.keySet()) {
+            Player player = Bukkit.getServer().getPlayer(uuid);
+
+            player.sendMessage(toSend);
+
+            for(IUser mentioned : message.getMentions()) {
+                if(playerDiscordMap.values().contains(mentioned.getDiscriminator())) {
+                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_CHIME, 10, 1.0f);
+                }
+            }
         }
+    }
+
+    public static IDiscordClient getDiscordClient() {
+        return discordClient;
     }
 
     private IDiscordClient createDiscordClient(String token, boolean login) {
