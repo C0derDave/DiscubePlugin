@@ -2,7 +2,6 @@ package com.codingcrusader.discubeplugin;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Color;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -11,9 +10,7 @@ import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.handle.obj.IUser;
 import sx.blah.discord.util.DiscordException;
-import sx.blah.discord.util.MessageTokenizer;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
