@@ -1,3 +1,7 @@
 name: DiscubePlugin
 version: 1.0
 main: com.codingcrusader.discubeplugin.DiscubePlugin
+commands:
+   register:
+      description: Register your discriminator(XXXX) for Discord integration.
+      usage: /register XXXX
